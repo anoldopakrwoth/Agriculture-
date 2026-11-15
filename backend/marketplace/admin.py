@@ -1,0 +1,39 @@
+from django.contrib import admin
+from .models import Order, OrderItem, ProduceListing
+
+
+@admin.register(ProduceListing)
+class ProduceListingAdmin(admin.ModelAdmin):
+    list_display = ('title', 'seller', 'price', 'quantity', 'village_origin', 'target_town', 'has_video', 'is_available', 'created_at')
+    list_filter = ('is_available', 'created_at', 'village_origin', 'target_town')
+    search_fields = ('title', 'description', 'seller__username', 'village_origin')
+    readonly_fields = ('created_at',)
+    fieldsets = (
+        ('Product Information', {
+            'fields': ('title', 'description', 'price', 'quantity', 'image', 'video')
+        }),
+        ('Location', {
+            'fields': ('village_origin', 'target_town')
+        }),
+        ('Seller & Status', {
+            'fields': ('seller', 'is_available', 'created_at')
+        }),
+    )
+
+    @admin.display(boolean=True, description='Video')
+    def has_video(self, obj):
+        return bool(obj.video)
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'buyer', 'status', 'total', 'created_at')
+    list_filter = ('status', 'created_at')
+    search_fields = ('buyer__username',)
+    readonly_fields = ('created_at',)
+
+
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ('order', 'listing', 'quantity', 'unit_price')
+    search_fields = ('listing__title', 'order__buyer__username')

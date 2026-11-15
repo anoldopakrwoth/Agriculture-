@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Farmers - AgriLink{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Browse Farmers</h1>
+    <p class="text-muted">See the produce and media uploaded by each farmer.</p>
+    <div class="row">
+        {% for farmer in farmers %}
+        <div class="col-md-6 col-lg-4 mb-3">
+            <a class="card p-4 text-decoration-none" href="{% url 'farmer_listings' farmer.seller__username %}">
+                <h3 class="h5 text-dark"><i class="fas fa-user"></i> {{ farmer.seller__username }}</h3>
+                <span class="text-success">View uploaded produce <i class="fas fa-arrow-right"></i></span>
+            </a>
+        </div>
+        {% empty %}
+        <p>No farmers have published produce yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

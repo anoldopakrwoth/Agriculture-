@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AgriLink - Agricultural Marketplace{% endblock %}</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #2ecc71;
+            --secondary-color: #27ae60;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white !important;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: white !important;
+            border-bottom: 3px solid white;
+        }
+
+        .nav-link.dashboard-entry {
+            font-weight: 700;
+        }
+
+        .nav-link.admin-dashboard-link {
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            border-radius: 8px;
+            color: #fff !important;
+            font-weight: 700;
+            margin-right: 8px;
+            padding-left: 14px !important;
+            padding-right: 14px !important;
+        }
+
+        .nav-link.admin-dashboard-link:hover,
+        .nav-link.admin-dashboard-link.active {
+            background: #fff;
+            color: var(--secondary-color) !important;
+            transform: translateY(-2px);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        /* Cards */
+        .card {
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            border-bottom: none;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 20px;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        /* Forms */
+        .form-label {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(46, 204, 113, 0.25);
+        }
+
+        /* Messages */
+        .alert {
+            border: none;
+            border-radius: 8px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .badge-success {
+            background-color: var(--primary-color);
+        }
+
+        /* Dashboard Sidebar */
+        .sidebar {
+            background-color: var(--dark-color);
+            min-height: 100vh;
+            padding-top: 20px;
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.7) !important;
+            padding: 12px 20px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            color: white !important;
+            background-color: rgba(46, 204, 113, 0.1);
+            border-left-color: var(--primary-color);
+        }
+
+        .sidebar .nav-link.active {
+            color: white !important;
+            background-color: rgba(46, 204, 113, 0.2);
+            border-left-color: var(--primary-color);
+        }
+
+        .user-sidebar-toggle {
+            align-items: center;
+            background: var(--dark-color);
+            border: 0;
+            border-radius: 0 20px 20px 0;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+            color: white;
+            display: flex;
+            gap: 8px;
+            left: 0;
+            padding: 11px 15px 11px 12px;
+            position: fixed;
+            top: 135px;
+            z-index: 1015;
+        }
+
+        .user-sidebar-toggle:hover {
+            background: var(--secondary-color);
+        }
+
+        .user-sidebar {
+            background: var(--dark-color);
+            color: white;
+            max-width: 310px;
+        }
+
+        .user-sidebar .offcanvas-header {
+            border-bottom: 1px solid rgba(255, 255, 255, .15);
+        }
+
+        .user-sidebar .btn-close {
+            filter: invert(1);
+        }
+
+        .user-sidebar-welcome {
+            color: rgba(255, 255, 255, .7);
+            line-height: 1.6;
+        }
+
+        .user-sidebar-link {
+            align-items: center;
+            background: transparent;
+            border: 0;
+            border-left: 4px solid transparent;
+            color: rgba(255, 255, 255, .82);
+            display: flex;
+            font-weight: 600;
+            gap: 12px;
+            padding: 13px 12px;
+            text-align: left;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .user-sidebar-link:hover,
+        .user-sidebar-link:focus {
+            background: rgba(46, 204, 113, .16);
+            border-left-color: var(--primary-color);
+            color: white;
+        }
+
+        .user-sidebar-link i {
+            color: var(--primary-color);
+            width: 20px;
+        }
+
+        .user-sidebar-logout {
+            border-top: 1px solid rgba(255, 255, 255, .15);
+            margin-top: 24px;
+            padding-top: 12px;
+        }
+
+        /* Dashboard Bar */
+        .dashboard-bar {
+            background: #ffffff;
+            border-bottom: 1px solid #e9ecef;
+            box-shadow: 0 2px 10px rgba(44, 62, 80, 0.06);
+            position: sticky;
+            top: 76px;
+            z-index: 1020;
+        }
+
+        .dashboard-bar-inner {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 12px 0;
+            white-space: nowrap;
+        }
+
+        .dashboard-bar-link {
+            align-items: center;
+            border-radius: 8px;
+            color: var(--dark-color);
+            display: inline-flex;
+            font-weight: 600;
+            gap: 8px;
+            min-height: 40px;
+            padding: 8px 12px;
+            text-decoration: none;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .dashboard-bar-link:hover,
+        .dashboard-bar-link.active {
+            background-color: rgba(46, 204, 113, 0.12);
+            color: var(--secondary-color);
+        }
+
+        .dashboard-bar-spacer {
+            flex: 1 0 16px;
+        }
+
+        /* Tables */
+        .table {
+            background-color: white;
+        }
+
+        .table thead {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .table tbody tr:hover {
+            background-color: var(--light-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .dashboard-bar-spacer {
+                display: none;
+            }
+
+            .dashboard-bar {
+                top: 0;
+            }
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/agrilink.css' %}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'market_feed' %}">
+                <i class="fas fa-leaf"></i> AgriLink
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% with current_url=request.resolver_match.url_name %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if current_url == 'market_feed' %}active{% endif %}" href="{% url 'market_feed' %}">
+                            <i class="fas fa-home"></i> Marketplace
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if current_url == 'farmer_directory' or current_url == 'farmer_listings' %}active{% endif %}" href="{% url 'farmer_directory' %}">
+                            <i class="fas fa-users"></i> Farmers
+                        </a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        {% if user.profile.role == 'farmer' %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if current_url == 'create_listing' %}active{% endif %}" href="{% url 'create_listing' %}">
+                                <i class="fas fa-plus"></i> Post Harvest
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if current_url == 'cart' %}active{% endif %}" href="{% url 'cart' %}">
+                                <i class="fas fa-shopping-cart"></i> Cart
+                            </a>
+                        </li>
+                        {% if user.is_staff or user.is_superuser %}
+                        <li class="nav-item">
+                            <a class="nav-link dashboard-entry {% if current_url == 'dashboard_home' or current_url == 'user_management' or current_url == 'listing_management' or current_url == 'analytics' or current_url == 'system_logs' or current_url == 'notifications' or current_url == 'change_admin_password' %}active{% endif %}" href="{% url 'dashboard_home' %}">
+                                <i class="fas fa-chart-line"></i> Dashboard
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i> {{ user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-id-card"></i> Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="POST" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <button class="dropdown-item" type="submit">
+                                            <i class="fas fa-sign-out-alt"></i> Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link admin-dashboard-link" href="{% url 'dashboard_home' %}">
+                                <i class="fas fa-user-shield"></i> Admin Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">
+                                <i class="fas fa-sign-in-alt"></i> Sign In
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'signup' %}">
+                                <i class="fas fa-user-plus"></i> Create Account
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% endwith %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {% if user.is_authenticated and user.is_staff %}
+        {% include 'dashboard/_dashboard_nav.html' %}
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        <button
+            class="user-sidebar-toggle"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#userSidebar"
+            aria-controls="userSidebar"
+        >
+            <i class="fas fa-bars"></i>
+            <span>My Menu</span>
+        </button>
+        <aside
+            class="offcanvas offcanvas-start user-sidebar"
+            tabindex="-1"
+            id="userSidebar"
+            aria-labelledby="userSidebarLabel"
+        >
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="userSidebarLabel">
+                    <i class="fas fa-user-circle"></i> {{ user.username }}
+                </h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="offcanvas-body">
+                <p class="user-sidebar-welcome">
+                    Browse fresh produce, manage your account, and connect with farmers.
+                </p>
+                <nav aria-label="User navigation">
+                    <a class="user-sidebar-link" href="{% url 'market_feed' %}">
+                        <i class="fas fa-store"></i> Browse Marketplace
+                    </a>
+                    {% if user.profile.role == 'farmer' %}
+                    <a class="user-sidebar-link" href="{% url 'create_listing' %}">
+                        <i class="fas fa-plus-circle"></i> Post Your Harvest
+                    </a>
+                    {% endif %}
+                    <a class="user-sidebar-link" href="{% url 'farmer_directory' %}">
+                        <i class="fas fa-users"></i> Browse Farmers
+                    </a>
+                    <a class="user-sidebar-link" href="{% url 'cart' %}">
+                        <i class="fas fa-shopping-cart"></i> My Cart
+                    </a>
+                    <a class="user-sidebar-link" href="{% url 'profile' %}">
+                        <i class="fas fa-id-card"></i> My Profile
+                    </a>
+                    {% if user.is_staff or user.is_superuser %}
+                    <a class="user-sidebar-link" href="{% url 'dashboard_home' %}">
+                        <i class="fas fa-chart-line"></i> Admin Dashboard
+                    </a>
+                    {% endif %}
+                </nav>
+                <form method="POST" action="{% url 'logout' %}" class="user-sidebar-logout">
+                    {% csrf_token %}
+                    <button class="user-sidebar-link" type="submit">
+                        <i class="fas fa-sign-out-alt"></i> Sign Out
+                    </button>
+                </form>
+            </div>
+        </aside>
+    {% endif %}
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="container mt-4">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><i class="fas fa-leaf"></i> AgriLink</h5>
+                    <p>Connecting farmers to markets, fresh produce at your doorstep.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'market_feed' %}" class="text-light">Marketplace</a></li>
+                        {% if user.is_authenticated %}
+                        {% if user.profile.role == 'farmer' %}<li><a href="{% url 'create_listing' %}" class="text-light">Post Harvest</a></li>{% endif %}
+                        <li><a href="{% url 'profile' %}" class="text-light">My Profile</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Contact</h5>
+                    <p>
+                        <i class="fas fa-phone"></i> +256 XXX XXX XXX<br>
+                        <i class="fas fa-envelope"></i> info@agrilink.com
+                    </p>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <p>&copy; 2026 AgriLink. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Order #{{ order.pk }} - AgriLink{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Order #{{ order.pk }}</h1>
+    <p class="text-muted">Status: {{ order.get_status_display }} · {{ order.created_at }}</p>
+    <div class="card p-3">
+        {% for item in order.items.all %}
+        <div class="d-flex justify-content-between border-bottom py-2">
+            <span>{{ item.listing.title }} ({{ item.quantity }})</span>
+            <strong>UGX {{ item.subtotal }}</strong>
+        </div>
+        {% endfor %}
+        <div class="d-flex justify-content-between pt-3"><strong>Total</strong><strong>UGX {{ order.total }}</strong></div>
+    </div>
+</div>
+{% endblock %}

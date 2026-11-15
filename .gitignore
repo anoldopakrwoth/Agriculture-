@@ -1,0 +1,43 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+ENV/
+env/
+.venv/
+.mypy_cache/
+.pytest_cache/
+*.egg-info/
+
+# Build and local runtime data
+build/
+dist/
+staticfiles/
+media/
+*.log
+db.sqlite3*
+data/store.json
+render-cli/
+render-cli.zip
+.vercel/
+
+# Editors and OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+nul

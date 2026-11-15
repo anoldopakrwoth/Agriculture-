@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ farmer.username }}'s Produce - AgriLink{% endblock %}
+
+{% block content %}
+<div class="container">
+    <a href="{% url 'farmer_directory' %}" class="btn btn-link px-0 mb-3">← All Farmers</a>
+    <h1>{{ farmer.username }}'s Produce</h1>
+    <p class="text-muted mb-4">Everything this farmer has uploaded.</p>
+    <div class="row">
+        {% for listing in listings %}
+        <div class="col-md-6 mb-3">
+            <div class="card p-3 h-100">
+                {% if listing.image %}<img src="{{ listing.image.url }}" alt="{{ listing.title }}" class="img-fluid rounded mb-3" style="max-height: 240px; object-fit: cover;">{% endif %}
+                {% if listing.video %}<video controls class="w-100 rounded mb-3" style="max-height: 240px;"><source src="{{ listing.video.url }}"></video>{% endif %}
+                <h2 class="h5"><a href="{% url 'listing_detail' listing.pk %}">{{ listing.title }}</a></h2>
+                <p class="mb-2">UGX {{ listing.price }} / {{ listing.quantity }}</p>
+                <a href="{% url 'listing_detail' listing.pk %}" class="btn btn-primary mt-auto">View and Order</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
